@@ -130,6 +130,7 @@ class Board(object):
   def randomTile(self):
     cells = list(self.get_empty_cells())
     if not cells:
+      indexes.append([-1, -1])
       return False
     #print 'cells', cells
 

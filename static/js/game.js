@@ -138,6 +138,7 @@ function addRandomNumber() {
       return;
   }
   const newPos = INDEXES[index++];
+  if(newPos[0]==-1) { return; }
   const newObj = {
     id: nextId++,
     index: newPos[0],
