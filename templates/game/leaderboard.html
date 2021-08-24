@@ -21,7 +21,7 @@ List of top ranking submission using seed 0
             {% for obj in object_list %}
             <tr>
                 <th scope="row">{{forloop.counter}}</th>
-                <td>{{obj.user.first_name}} {{obj.user.last_name}}</td>
+                <td>{{obj.user.username}}</td>
                 <td>{{obj.seed}}</td>
                 <td>{{obj.score}}</td>
                 <td>{{obj.time}}</td>
