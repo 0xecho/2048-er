@@ -3,11 +3,15 @@ from multiprocessing import Process
 from tempfile import NamedTemporaryFile
 from django.conf import settings
 import os
+from time import sleep
 from math import log2
 
 def judge(submission):
     out_file = NamedTemporaryFile(mode="r+")
-    os.system(f"bash -c 'python3 {submission.code_file.path} < {out_file.name} | python3 {settings.BASE_DIR/'game/gen.py'} {submission.seed} > {out_file.name}'")
+    seq_file = NamedTemporaryFile(mode="r+")
+    ind_file = NamedTemporaryFile(mode="r+")
+    
+    os.system(f"bash -c 'python3 {submission.code_file.path} < {out_file.name} | python3 {settings.BASE_DIR/'game/gen.py'} {submission.seed} {seq_file.name} {ind_file.name} > {out_file.name}'")
 
     lst = []
     with open(out_file.name, "r+") as f:
@@ -21,8 +25,10 @@ def judge(submission):
                 score += int(col) * log2(int(col))
             except:
                 pass
-        
+       
     submission.score = score
+    submission.moves_history = open(seq_file.name, "r").read().strip()
+    submission.indexes_state = ind_file.read().strip()
     if not lst:
         submission.status = "Runtime Error"
 

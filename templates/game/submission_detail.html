@@ -1,0 +1,45 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Submission Detail{% endblock %}
+
+{% block content %}
+<h2>Submission Detail</h2>
+
+  <div class="container">
+    <div class="scores">
+      <div class="score-container">
+        <div class="score">
+          <div class="add" id="add"></div>
+        </div>
+      </div>
+    </div>
+    <div class="game">
+      <div id="tile-container" class="tile-container"></div>
+    </div>
+    <input type="button" value="Next Move" onclick="next_move()">
+  </div>
+
+  <script>
+      
+      var MOVES = {{moves}};
+      //   var MOVES = [0,0,0,0,0,0,0,0,0,0];
+      var INDEXES = {{object.indexes_state}};
+    //   var INDEXES = [
+    //     [1,2],
+    //     [2,2],
+    //     [14,4],
+    //     [4,2],
+    //     [5,2],
+    //     [6,4],
+    //     [8,2],
+    //     [7,2],
+    //     [9,2],
+    //     [10,2],
+    //   ];
+  </script>
+  
+  <script src="{% static 'js/game.js' %}"></script>
+
+{% endblock content %}

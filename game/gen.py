@@ -1,8 +1,12 @@
 import sys
+import json
 import random
 
 seed = sys.argv[1]
 random.seed(seed)
+
+seq_file_name = sys.argv[2]
+ind_file_name = sys.argv[3]
 
 N = 4
 
@@ -16,6 +20,8 @@ KEY_RIGHT = 'right'
 KEY_DOWN = 'down'
 
 KEYS = [KEY_LEFT, KEY_UP, KEY_RIGHT, KEY_DOWN]
+
+indexes = []
 
 class Board(object):
   def __init__(self):
@@ -108,9 +114,9 @@ class Board(object):
     self.board = next_board
     self.score += got_score
 
-    if moved:
-      if not self.randomTile():
-        self.over = True
+    # if moved:
+      # if not self.randomTile():
+        # self.over = True
 
   def canMove(self, grid, direction):
     return grid != self.to_move(grid, direction)[0]
@@ -136,6 +142,9 @@ class Board(object):
     cid = random.choice(cells)
     #print cid
     self.board[cid[0]][cid[1]] = v
+
+    indexes.append([cid[0]+cid[1]*4, v])    
+
     return True
 
   def show(self):
@@ -152,11 +161,19 @@ board.randomTile()
 board.randomTile()
 board.show()
 count = 0
+opt = ""
 for line in sys.stdin:
     ipt = int(line.strip())
+    opt += line.strip()
     board.move(KEYS[ipt])
+    board.randomTile()
     board.show()
     count += 1
     if count==1000:
         break
-
+f = open(seq_file_name, "w")
+f.write(opt)
+f.close()
+f = open(ind_file_name, "w")
+f.write(json.dumps(indexes))
+f.close()

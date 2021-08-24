@@ -22,6 +22,7 @@
                 <td>{{obj.seed}}</td>
                 <td>{{obj.score}}</td>
                 <td>{{obj.time}}</td>
+                <td><a href="{% url 'submission_detail' obj.pk %}">View</a></td>
             </tr>
             {% endfor %}
         </tbody>

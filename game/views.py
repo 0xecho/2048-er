@@ -38,3 +38,13 @@ class Leaderboard(generic.ListView):
         # TODO: Filter out same score submission by same person
         return qs[:50]
 
+class SubmissionDetail(generic.DetailView):
+    model = models.Submission
+    
+    def get_context_data(self, **kwargs):
+        kwargs.update({
+            "moves": [int(i) for i in list(self.object.moves_history)]
+        })
+        return super().get_context_data(**kwargs)
+
+
