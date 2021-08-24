@@ -1,4 +1,4 @@
-import sys
+import os, sys
 import json
 import random
 
@@ -7,6 +7,8 @@ random.seed(seed)
 
 seq_file_name = sys.argv[2]
 ind_file_name = sys.argv[3]
+out_file_name = sys.argv[4]
+pipe_name = sys.argv[5]
 
 N = 4
 
@@ -163,18 +165,33 @@ board.randomTile()
 board.show()
 count = 0
 opt = ""
-for line in sys.stdin:
-    ipt = int(line.strip())
-    opt += line.strip()
-    board.move(KEYS[ipt])
-    board.randomTile()
-    board.show()
-    count += 1
-    if count==1000:
-        break
+f = open("/tmp/log1", "w")
+while True:
+    try:
+      line = input()
+      ipt = int(line.strip())
+      opt += line.strip()
+      board.move(KEYS[ipt])
+      board.randomTile()
+      board.show()
+      count += 1
+      if count>=1000:
+          break
+      f.write("1\n")
+    except:
+      break
+
+f.close()
 f = open(seq_file_name, "w")
 f.write(opt)
 f.close()
 f = open(ind_file_name, "w")
 f.write(json.dumps(indexes))
 f.close()
+f = open(out_file_name, "w")
+f.write(json.dumps(board.board))
+f.close()
+
+# print(open(out_file_name, "r").read())
+
+# os.system(f"rm {pipe_name}")
