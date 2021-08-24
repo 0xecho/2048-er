@@ -10,16 +10,4 @@ __pycache__/
 *.log
 db.sqlite3
 media
-code_files/temp_94wkUFO.py
-code_files/temp_bml3qUI.py
-code_files/temp_CZZAjft.py
-code_files/temp_J9bF4gW.py
-code_files/temp_o8tUiCp.py
-code_files/temp_ohNqJLO.py
-code_files/temp_Oj2UkXa.py
-code_files/temp_PczNQQD.py
-code_files/temp_tYeNcsp.py
-code_files/temp_vLdUNIp.py
-code_files/temp_W5lGdNw.py
-code_files/temp_WP2YC2m.py
-code_files/temp_zTsZJaF.py
+code_files/*
