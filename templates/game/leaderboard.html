@@ -12,7 +12,6 @@ List of top ranking submission using seed 0
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">User</th>
-    
                 <th scope="col">Score</th>
                 <th scope="col">Time</th>
             </tr>
@@ -24,6 +23,7 @@ List of top ranking submission using seed 0
                 <td>{{obj.user.username}}</td>
                 <td>{{obj.score}}</td>
                 <td>{{obj.time}}</td>
+                <td><a href="{% url 'submission_detail' obj.pk %}">View</a></td>
             </tr>
             {% endfor %}
         </tbody>
