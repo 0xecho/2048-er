@@ -1,0 +1,33 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Leaderboards{% endblock %}
+
+{% block content %}
+<h2>Leaderboard</h2>
+List of top ranking submission using seed 0
+<ol>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">User</th>
+                <th scope="col">Seed</th>
+                <th scope="col">Score</th>
+                <th scope="col">Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in object_list %}
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{obj.user.first_name}} {{obj.user.last_name}}</td>
+                <td>{{obj.seed}}</td>
+                <td>{{obj.score}}</td>
+                <td>{{obj.time}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</ol>
+{% endblock content %}

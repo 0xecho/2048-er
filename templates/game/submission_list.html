@@ -1,0 +1,30 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Submit Code{% endblock %}
+
+{% block content %}
+<h2>Submissions</h2>
+<ol>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Seed</th>
+                <th scope="col">Score</th>
+                <th scope="col">Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in object_list %}
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{obj.seed}}</td>
+                <td>{{obj.score}}</td>
+                <td>{{obj.time}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</ol>
+{% endblock content %}
