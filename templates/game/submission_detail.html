@@ -11,7 +11,8 @@
     <div class="text-center">
       Submission by: {{object.user.first_name}} {{object.user.last_name}} ({{object.user.username}}) <br>
       Submitted on: {{object.time}} <br>
-      Submission score: <b>{{object.score}}</b>
+      Submission score: <b>{{object.score}}</b> <br>
+      Number of moves: <b>{{object.moves_history | length}}</b>
     </div>
     <div class="scores">
       <div class="score-container">

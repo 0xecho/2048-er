@@ -133,6 +133,7 @@ class Board(object):
     cells = list(self.get_empty_cells())
     if not cells:
       indexes.append([-1, -1])
+      self.over = True
       return False
     #print 'cells', cells
 
@@ -174,6 +175,8 @@ while True:
       board.move(KEYS[ipt])
       board.randomTile()
       board.show()
+      if board.over:
+        break
       count += 1
       if count>=1000:
           break
