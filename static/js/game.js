@@ -399,4 +399,10 @@ function newGameStart() {
   
 }
 
+function skip_move(){
+  for(var i=0;i<1000;i++){
+    next_move()
+  }  
+}
+
 newGameStart();
