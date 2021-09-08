@@ -47,4 +47,13 @@ class SubmissionDetail(generic.DetailView):
         })
         return super().get_context_data(**kwargs)
 
+class RejudeAll(generic.TemplateView):
+    template_name = "game/leaderboard.html"
 
+    def get(self, *args, **kwargs):
+        qs = models.Submission.objects.all()
+        for subm in qs:
+            judge_obj = judge.Judge(subm)
+            judge_obj.start()
+            judge_obj.join()
+        return super().get(*args, **kwargs)

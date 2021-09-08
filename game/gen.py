@@ -178,7 +178,7 @@ while True:
       if board.over:
         break
       count += 1
-      if count>=1000:
+      if count>=100000:
           break
       f.write("1\n")
     except:

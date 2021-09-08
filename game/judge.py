@@ -7,6 +7,7 @@ from time import sleep
 from math import log2
 import string
 import random
+import datetime
 
 def rand_str():
     opt = ""
@@ -41,6 +42,7 @@ def judge(submission):
     submission.score = score
     submission.moves_history = open(seq_file.name, "r").read().strip()
     submission.indexes_state = ind_file.read().strip()
+    submission.time = datetime.datetime.now()
     if not lst:
         submission.status = "Runtime Error"
 
