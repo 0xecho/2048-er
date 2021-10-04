@@ -21,9 +21,13 @@ def judge(submission):
     ind_file = NamedTemporaryFile(mode="r+")
     pipe_name = "/tmp/"+rand_str()
     
-    os.system(f"bash -c 'mkfifo {pipe_name} && python3 {submission.code_file.path} < {pipe_name} | python3 {settings.BASE_DIR/'game/gen.py'} {submission.seed} {seq_file.name} {ind_file.name} {out_file.name} {pipe_name} > {pipe_name}'")
-    print(f"bash -c 'mkfifo {pipe_name} && python3 {submission.code_file.path} < {pipe_name} | python3 {settings.BASE_DIR/'game/gen.py'} {submission.seed} {seq_file.name} {ind_file.name} {out_file.name} {pipe_name} > {pipe_name}'")
+    os.system(f"sudo chown www-data {out_file.name} {seq_file.name} {ind_file.name}")
+    os.system(f"sudo chmod a+rwx {out_file.name} {seq_file.name} {ind_file.name}")
+    print(f"sudo chmod a+rwx {out_file.name} {seq_file.name} {ind_file.name}")
+    os.system(f"sudo -u www-data bash -c \'mkfifo {pipe_name} && python3 {submission.code_file.path} < {pipe_name} | python3 {settings.BASE_DIR/'game/gen.py'} {submission.seed} {seq_file.name} {ind_file.name} {out_file.name} {pipe_name} > {pipe_name}\'")
+    print(f"sudo -u www-data bash -c 'mkfifo {pipe_name} && python3 {submission.code_file.path} < {pipe_name} | python3 {settings.BASE_DIR/'game/gen.py'} {submission.seed} {seq_file.name} {ind_file.name} {out_file.name} {pipe_name} > {pipe_name}'")
 
+    os.system(f"sudo chown `whoami` {out_file.name} {seq_file.name} {ind_file.name}")
     # lst = []
     # with open(out_file.name, "r+") as f:
     #     for line in f.readlines():

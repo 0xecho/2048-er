@@ -4,6 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+ipython = "*"
 
 [packages]
 django = "~=3.1.0"
@@ -11,6 +12,7 @@ django-allauth = "==0.43.0"
 django-crispy-forms = "~=1.10.0"
 django-debug-toolbar = "==3.2"
 whitenoise = "==5.2.0"
+restrictedpython = "*"
 
 [requires]
 python_version = "3.8"

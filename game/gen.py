@@ -133,7 +133,6 @@ class Board(object):
     cells = list(self.get_empty_cells())
     if not cells:
       indexes.append([-1, -1])
-      self.over = True
       return False
     #print 'cells', cells
 
@@ -167,12 +166,16 @@ board.show()
 count = 0
 opt = ""
 f = open("/tmp/log1", "w")
+last_board = [i.copy() for i in board.board]
 while True:
     try:
       line = input()
       ipt = int(line.strip())
       opt += line.strip()
       board.move(KEYS[ipt])
+      if board == last_board:
+        continue
+      last_board = [i.copy() for i in board.board]
       board.randomTile()
       board.show()
       if board.over:
