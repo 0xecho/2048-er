@@ -99,12 +99,14 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
+## WARNING: This repo is still in development and is highly unsafe at the moment. I am working on to isolating the USER UPLOADED AND DEFINITELY UNSAFE CODE during runtime. Currently, the USER UPLOADED AND DEFINITELY UNSAFE CODE is being run as a lower priviledge user on a ec2 instance noone cares about. DONOT ATTEMPT TO HOST THIS IN ANY PUBLICALLY ACCESSIBLE DEVICE IF YOU DONOT KNOW WHAT YOU ARE DOING!!!
+
 1. Clone the repo
    ```sh
    git clone https://github.com/0xecho/2048-er.git
    cd 2048-er
    ```
-2. Install NPM packages
+2. Install packages
    ```sh
    pipenv install
    ```
