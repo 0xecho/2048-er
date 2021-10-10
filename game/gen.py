@@ -116,6 +116,7 @@ class Board(object):
     self.board = next_board
     self.score += got_score
 
+    return moved
     # if moved:
       # if not self.randomTile():
         # self.over = True
@@ -172,11 +173,13 @@ while True:
       line = input()
       ipt = int(line.strip())
       opt += line.strip()
-      board.move(KEYS[ipt])
+      moved = board.move(KEYS[ipt])
       if board == last_board:
         continue
       last_board = [i.copy() for i in board.board]
-      board.randomTile()
+      added_tile = board.randomTile()
+      if move and not added_tile:
+        board.over = True
       board.show()
       if board.over:
         break
