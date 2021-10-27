@@ -178,7 +178,7 @@ while True:
         continue
       last_board = [i.copy() for i in board.board]
       added_tile = board.randomTile()
-      if move and not added_tile:
+      if moved and not added_tile:
         board.over = True
       board.show()
       if board.over:
