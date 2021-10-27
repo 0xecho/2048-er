@@ -13,3 +13,5 @@ class Submission(models.Model):
     indexes_state = models.TextField()
     status = models.CharField(max_length=100)
     time = models.DateTimeField(auto_now_add=True, editable=False)
+    is_run = models.BooleanField(default=False)
+    errors = models.TextField()

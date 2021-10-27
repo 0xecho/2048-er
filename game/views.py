@@ -17,8 +17,6 @@ class SubmitCodeView(mixins.LoginRequiredMixin, generic.CreateView):
         ret = super().form_valid(form)
         self.object.user = self.request.user
         self.object.save()
-        judge_obj = judge.Judge(self.object)
-        judge_obj.start()
         return ret
 
 class ListHistory(mixins.LoginRequiredMixin, generic.ListView):
@@ -46,14 +44,3 @@ class SubmissionDetail(generic.DetailView):
             "moves": [int(i) for i in list(self.object.moves_history)]
         })
         return super().get_context_data(**kwargs)
-
-class RejudeAll(generic.TemplateView):
-    template_name = "game/leaderboard.html"
-
-    def get(self, *args, **kwargs):
-        qs = models.Submission.objects.all()
-        for subm in qs:
-            judge_obj = judge.Judge(subm)
-            judge_obj.start()
-            judge_obj.join()
-        return super().get(*args, **kwargs)
