@@ -14,6 +14,7 @@ django-debug-toolbar = "==3.2"
 whitenoise = "==5.2.0"
 restrictedpython = "*"
 epicbox = "*"
+pexpect = "*"
 
 [requires]
 python_version = "3.8"

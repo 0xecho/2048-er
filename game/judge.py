@@ -1,18 +1,35 @@
-# Re write entire judging to utilize celery and proper restrictions
+from re import sub
 import epicbox
+import threading
+from django.conf import settings
 
 epicbox.configure(profiles=[
-    epicbox.Profile("python", "python:3.8.12-alpine")
+    epicbox.Profile("python", "0xecho/python3.8.12:latest")
 ])
 GLOBAL_LIMITS = {"cputime": 60, "memory": 512}
 
 
 def judge(submission):
+    t = threading.Thread(target=judge_worker, args=(submission,))
+    t.start()
+
+def judge_worker(submission):
     file_name = submission.code_file.name
     file_content = open(file_name, "rb").read()
     file_name = file_name.split("/")[-1]
     if not file_name.endswith(".py"):
         file_name += ".py"
-    files = [{"name": file_name, "content": file_content}]
-    result = epicbox.run("python", f"python3 {file_name}", files=files, limits=GLOBAL_LIMITS)
-    print(result)
+    files = [
+        {"name": file_name, "content": file_content},
+        {"name": "runner.py", "content": open(settings.RUNNER_FILE_PATH, "rb").read()},
+        {"name": "gen.py", "content": open(settings.GAME_FILE_PATH, "rb").read()},
+    ]
+    result = epicbox.run("python", f"python3 runner.py gen.py {file_name} {submission.seed}", files=files, limits=GLOBAL_LIMITS)
+    output = result.get("stdout").decode()
+    score, moves, _ = output.split("\n")
+    moves = moves[1:-1].replace('\'',"").replace(",","")
+    moves = moves.split(" ")
+    moves = [int(move) for move in moves if move]
+    submission.moves_history = str(moves)
+    submission.score = float(score.strip())
+    submission.save()

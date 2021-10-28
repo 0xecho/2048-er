@@ -7,6 +7,7 @@ from django.test import Client, TestCase
 from django.urls import reverse_lazy
 
 from accounts import models as auth_models
+from game.judge import judge_worker
 from . import models
 # Create your tests here.
 
@@ -24,7 +25,10 @@ class TestJudge(TestCase):
     
     def test_submission(self):
 
-        sample_code = b"print(0)\nprint(1)\nprint(2)\nprint(3)"
+        sample_code = b"""for i in range(10):
+	for _ in range(4):
+		x = input()
+	print(i%4)"""
 
         f = NamedTemporaryFile(mode="wb")
         f.write(sample_code)
@@ -35,5 +39,8 @@ class TestJudge(TestCase):
         first_submission = models.Submission.objects.first()
 
         self.assertEqual(first_submission.code_file.read(), open(f.name, "rb").read())
-        self.assertNotEqual(first_submission.moves_history, "", "No moves were made by submission")
+    
+        judge_worker(first_submission)
+
         self.assertNotEqual(first_submission.score, 0, "Score was not recorded for submission")
+        self.assertNotEqual(first_submission.moves_history, "", "No moves were made by submission")

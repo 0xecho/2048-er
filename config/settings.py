@@ -175,3 +175,7 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_FORMS = {
     'signup': 'accounts.forms.CustomUserCreationForm'
 }
+
+# Custom settings
+RUNNER_FILE_PATH = BASE_DIR / "game/runner.py" 
+GAME_FILE_PATH = BASE_DIR / "game/gen.py" 

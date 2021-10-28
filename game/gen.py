@@ -1,4 +1,5 @@
 import math , random
+import sys
 
 def rotate_right(board):
     tmp = list(zip(*board[::-1]))
@@ -50,6 +51,8 @@ def make_random_move(board):
         for cidx, col in enumerate(row):
             if col==0:
                 zeroes.append((ridx, cidx))
+    if not zeroes:
+        return board
     random_pos = random.choice(zeroes)
     board[random_pos[0]][random_pos[1]] = num
     return board
@@ -93,4 +96,46 @@ class Board:
         return True
 
     def show(self):
-        print(*self.board, sep="\n")
+        for row in self.board:
+            print(*row)
+
+random.seed(sys.argv[1])
+
+moves = [
+    make_left_move,
+    make_up_move,
+    make_right_move,
+    make_down_move
+]
+
+MOVE_LIMIT = 10_000
+move_count = 0
+
+board = Board([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],])
+for _ in range(2):
+    new_state = make_random_move(board.board)
+    board = Board(new_state)
+board.show()
+print(board.score())
+
+while True:
+    move = input()
+    try:
+        move = int(move)
+        if not move in range(0,4):
+            raise
+    except:
+        print("GAMEOVER")
+        sys.exit()
+    move_count += 1
+    
+    move_func = moves[move]
+    new_state = move_func(board.board)
+    new_state = make_random_move(new_state)
+    board = Board(new_state)
+    
+    if board.is_over() or move_count > MOVE_LIMIT:
+        print("GAMEOVER")
+        sys.exit()
+    board.show()
+    print(board.score())
