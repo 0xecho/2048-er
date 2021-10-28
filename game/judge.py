@@ -26,10 +26,14 @@ def judge_worker(submission):
     ]
     result = epicbox.run("python", f"python3 runner.py gen.py {file_name} {submission.seed}", files=files, limits=GLOBAL_LIMITS)
     output = result.get("stdout").decode()
-    score, moves, _ = output.split("\n")
+    score, moves, indexes, _ = output.split("\n")
     moves = moves[1:-1].replace('\'',"").replace(",","")
     moves = moves.split(" ")
-    moves = [int(move) for move in moves if move]
-    submission.moves_history = str(moves)
+    indexes = indexes.replace("'", "").replace("GAMEOVER", "")
+    indexes = eval(indexes)
+    # print(indexes)
+    # print(type(indexes))
+    submission.moves_history = ",".join(moves)
+    submission.indexes_state = indexes
     submission.score = float(score.strip())
     submission.save()

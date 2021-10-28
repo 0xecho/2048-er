@@ -1,3 +1,4 @@
+from sys import setcheckinterval
 from django.shortcuts import render
 from django.views import generic
 from django.contrib.auth import mixins
@@ -17,7 +18,7 @@ class SubmitCodeView(mixins.LoginRequiredMixin, generic.CreateView):
         ret = super().form_valid(form)
         self.object.user = self.request.user
         self.object.save()
-        # judge.judge(self.object)
+        judge.judge(self.object)
         return ret
 
 class ListHistory(mixins.LoginRequiredMixin, generic.ListView):
@@ -42,6 +43,7 @@ class SubmissionDetail(generic.DetailView):
     
     def get_context_data(self, **kwargs):
         kwargs.update({
-            "moves": [int(i) for i in list(self.object.moves_history)]
+            "moves": [int(i) for i in list(self.object.moves_history.split(",")) if i],
+            "indexes": [[i[0]*4 + i[1], j] for i,j in eval(self.object.indexes_state)]
         })
         return super().get_context_data(**kwargs)

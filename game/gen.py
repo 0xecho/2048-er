@@ -50,10 +50,11 @@ def make_random_move(board):
     for ridx, row in enumerate(board):
         for cidx, col in enumerate(row):
             if col==0:
-                zeroes.append((ridx, cidx))
+                zeroes.append([ridx, cidx])
     if not zeroes:
         return board
     random_pos = random.choice(zeroes)
+    print([random_pos, num])
     board[random_pos[0]][random_pos[1]] = num
     return board
 

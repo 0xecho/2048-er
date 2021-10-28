@@ -1,4 +1,4 @@
-from re import sub
+from time import sleep
 import sys
 import pexpect
 
@@ -13,6 +13,12 @@ submission.delaybeforesend = None
 
 score = 0
 move_history = []
+indexes = []
+
+for _ in range(2):
+    index = game.readline().strip().decode()
+    print("Index:", index, file=sys.stderr)
+    indexes.append(index)
 
 while True:
     print("Loop", file=sys.stderr)
@@ -35,6 +41,10 @@ while True:
     game.sendline(move)
     game.flush()
     game.readline()
+    index = game.readline().strip().decode()
+    print("Index:", index, file=sys.stderr)
+    indexes.append(index)
 
 print(score)
 print(move_history)
+print(indexes)
