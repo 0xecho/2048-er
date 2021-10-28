@@ -25,6 +25,8 @@ def judge_worker(submission):
         {"name": "gen.py", "content": open(settings.GAME_FILE_PATH, "rb").read()},
     ]
     result = epicbox.run("python", f"python3 runner.py gen.py {file_name} {submission.seed}", files=files, limits=GLOBAL_LIMITS)
+    submission.errors = str(result)
+    submission.save()
     output = result.get("stdout").decode()
     score, moves, indexes, _ = output.split("\n")
     moves = moves[1:-1].replace('\'',"").replace(",","")
