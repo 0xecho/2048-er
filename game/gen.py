@@ -110,7 +110,7 @@ moves = [
     make_down_move
 ]
 
-MOVE_LIMIT = 10_000
+MOVE_LIMIT = 5_000
 move_count = 0
 
 board = Board([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],])
