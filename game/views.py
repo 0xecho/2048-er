@@ -17,6 +17,7 @@ class SubmitCodeView(mixins.LoginRequiredMixin, generic.CreateView):
         ret = super().form_valid(form)
         self.object.user = self.request.user
         self.object.save()
+        judge.judge(self.object)
         return ret
 
 class ListHistory(mixins.LoginRequiredMixin, generic.ListView):
