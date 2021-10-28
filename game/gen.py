@@ -52,6 +52,7 @@ def make_random_move(board):
             if col==0:
                 zeroes.append([ridx, cidx])
     if not zeroes:
+        print([[0, -1], num])
         return board
     random_pos = random.choice(zeroes)
     print([random_pos, num])
