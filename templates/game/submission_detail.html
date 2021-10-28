@@ -12,6 +12,11 @@
       Submission by: {{object.user.first_name}} {{object.user.last_name}} ({{object.user.username}}) <br>
       Submitted on: {{object.time}} <br>
       Submission score: <b>{{object.score}}</b> <br>
+    {% if is_processing %}
+      </div>
+    </div>
+    <h4>Still processing, check back after a while...</h4>
+    {% else %}
       Number of moves: <b>{{object.moves_history | length}}</b>
     </div>
     <div class="scores">
@@ -49,5 +54,6 @@
   </script>
   
   <script src="{% static 'js/game.js' %}"></script>
-
+    
+  {% endif %}
 {% endblock content %}

@@ -10,7 +10,7 @@ class Submission(models.Model):
     seed = models.IntegerField(default=0)
     score = models.IntegerField(default=0)
     moves_history = models.TextField()
-    indexes_state = models.TextField()
+    indexes_state = models.TextField(default="[]")
     status = models.CharField(max_length=100)
     time = models.DateTimeField(auto_now_add=True, editable=False)
     is_run = models.BooleanField(default=False)

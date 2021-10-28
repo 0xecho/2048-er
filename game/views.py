@@ -43,6 +43,7 @@ class SubmissionDetail(generic.DetailView):
     
     def get_context_data(self, **kwargs):
         kwargs.update({
+            "is_processing": eval(self.object.indexes_state)==[],
             "moves": [int(i) for i in list(self.object.moves_history.split(",")) if i],
             "indexes": [[i[0]*4 + i[1], j] for i,j in eval(self.object.indexes_state)]
         })
