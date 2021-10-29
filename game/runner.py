@@ -1,50 +1,42 @@
-from time import sleep
 import sys
-import pexpect
+import subprocess
 
 game_file = sys.argv[1]
 code_file = sys.argv[2]
 seed = sys.argv[3]
 
-game = pexpect.spawn(f"env python3 {game_file} {seed}")
-game.delaybeforesend = None
-submission = pexpect.spawn(f"env python3 {code_file}")
-submission.delaybeforesend = None
+game_process = subprocess.Popen(['/usr/bin/env', 'python3', game_file, seed], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+code_process = subprocess.Popen(['/usr/bin/env', 'python3', code_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-score = 0
-move_history = []
-indexes = []
+INDEXES = []
+MOVES = []
+SCORE = ""
 
 for _ in range(2):
-    index = game.readline().strip().decode()
-    print("Index:", index, file=sys.stderr)
-    indexes.append(index)
+    line = game_process.stdout.readline().strip().decode()
+    INDEXES.append(line)
 
 while True:
-    print("Loop", file=sys.stderr)
-    first_line = game.readline().strip().decode()
-    print("First line:", first_line, file=sys.stderr)
-    if not first_line or first_line == "GAMEOVER":
+    row = game_process.stdout.readline().strip().decode()
+    if row=="GAMEOVER":
         break
-    lines = [first_line] + [game.readline().strip().decode() for _ in range(3)]
-    score = game.readline().strip().decode()
-    print("SCORE", score, file=sys.stderr)
-    print("Lines:", lines, file=sys.stderr)
-    for line in lines:
-        submission.sendline(" ".join(line))
-        submission.flush()
-    for _ in range(4):
-        submission.readline()
-    move = submission.readline().strip().decode()
-    move_history.append(move)
-    print("Move:", move, file=sys.stderr)
-    game.sendline(move)
-    game.flush()
-    game.readline()
-    index = game.readline().strip().decode()
-    print("Index:", index, file=sys.stderr)
-    indexes.append(index)
+    board = [row] + [game_process.stdout.readline().strip().decode() for _ in range(3)]
+    score = game_process.stdout.readline().strip().decode()
+    SCORE = score
 
-print(score)
-print(move_history)
-print(indexes)
+    for row in board:
+        code_process.stdin.write((row+"\n").encode())
+    code_process.stdin.flush()
+    move = code_process.stdout.readline().strip().decode()
+    if not move:
+        break
+    MOVES.append(move)
+    game_process.stdin.write((move+"\n").encode())
+    game_process.stdin.flush()
+
+    line = game_process.stdout.readline().strip().decode()
+    if not line or line == "GAMEOVER":
+        break
+    INDEXES.append(line)
+
+print({"INDEXES": INDEXES, "MOVES": MOVES, "SCORE": SCORE})
