@@ -28,4 +28,5 @@ jobs:
       run: docker run 0xecho/python3.8.12:latest
     - name: Run Tests
       run: |
+        pipenv run python3 manage.py migrate &&
         pipenv run python3 manage.py test
