@@ -6,7 +6,7 @@ from django.conf import settings
 epicbox.configure(profiles=[
     epicbox.Profile("python", "0xecho/python3.8.12:latest")
 ])
-GLOBAL_LIMITS = {"cputime": 60, "memory": 512}
+GLOBAL_LIMITS = {"cputime": 5*60, "memory": 512}
 
 
 def judge(submission):
