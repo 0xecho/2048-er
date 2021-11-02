@@ -23,11 +23,14 @@ while True:
     board = [row] + [game_process.stdout.readline().strip().decode() for _ in range(3)]
     score = game_process.stdout.readline().strip().decode()
     SCORE = score
+    try:
+        for row in board:
+            code_process.stdin.write((row+"\n").encode())
+        code_process.stdin.flush()
+        move = code_process.stdout.readline().strip().decode()
+    except:
+        break
 
-    for row in board:
-        code_process.stdin.write((row+"\n").encode())
-    code_process.stdin.flush()
-    move = code_process.stdout.readline().strip().decode()
     if not move:
         break
     MOVES.append(move)
