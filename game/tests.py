@@ -34,7 +34,13 @@ class TestJudge(TestCase):
         f.write(sample_code)
         f.flush()
 
-        res = self.client.post(reverse_lazy("submit"), data={"seed": 0, "code_file": open(f.name, "rb")})
+        # res = self.client.post(reverse_lazy("submit"), data={"seed": 0, "code_file": open(f.name, "rb")})
+        new_submission = models.Submission.objects.create(
+            user=auth_models.CustomUser.objects.get(username="test_user"),
+            seed=0,
+        )
+        new_submission.code_file.save("test.py", files.File(open(f.name, 'rb')), save=True)
+        new_submission.save()
 
         first_submission = models.Submission.objects.first()
 
@@ -44,3 +50,8 @@ class TestJudge(TestCase):
 
         self.assertNotEqual(first_submission.score, 0, "Score was not recorded for submission")
         self.assertNotEqual(first_submission.moves_history, "", "No moves were made by submission")
+    
+    def test_leaderboards(self):
+        res = self.client.get(reverse_lazy("leaderboard"))
+        self.assertEqual(res.status_code, 200, "Leaderboards page did not load")
+        

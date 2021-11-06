@@ -35,8 +35,13 @@ class Leaderboard(generic.ListView):
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs).filter(seed=0)
-        # TODO: Filter out same score submission by same person
-        return qs[:50]
+        ret = set()
+        for s in qs:
+            if s.score not in ret:
+                ret.add(s.score)
+                yield s
+            if len(ret) >= 50:
+                break
 
 class SubmissionDetail(generic.DetailView):
     model = models.Submission
