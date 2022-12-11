@@ -3,8 +3,7 @@ from pathlib import Path
 
 import environ
 
-env = environ.Env(
-    
+env = environ.Env(    
     DEBUG=(bool, False)
 )
 # GENERAL
@@ -14,12 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ENV
 env_file = BASE_DIR / ".env"
 environ.Env.read_env(env_file= env_file)
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-SECRET_KEY
 SECRET_KEY = '43)%4yx)aa@a=+_c(fn&kf3g29xax+=+a&key9i=!98zyim=8j'
-# https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = True
-# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "*"]
 
 # APPS
 # ------------------------------------------------------------------------------
@@ -89,23 +85,6 @@ TEMPLATES = [
     },
 ]
 
-# DATABASES
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    } if DEBUG else {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
-    }
-}
-
 # PASSWORDS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
@@ -173,8 +152,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # DJANGO-ALLAUTH CONFIGS
 # ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#site-id
-SITE_ID = env('SITE_ID')
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
 LOGIN_REDIRECT_URL = 'home'
 # https://django-allauth.readthedocs.io/en/latest/views.html#logout-account-logout
@@ -194,11 +172,7 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_FORMS = {
     'signup': 'accounts.forms.CustomUserCreationForm'
 }
-SOCIALACCOUNT_PROVIDERS = {
-    'telegram': {
-        'TOKEN': env('TG_TOKEN'),
-    }
-}
+
 
 # Custom settings
 RUNNER_FILE_PATH = BASE_DIR / "game/runner.py" 
