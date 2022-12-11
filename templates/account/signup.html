@@ -1,13 +1,37 @@
-{% extends '_base.html' %}
-{% load crispy_forms_tags %}
-
-{% block title %}Sign up{% endblock %}
-
-{% block content %}
+{% extends '_base.html' %} {% load socialaccount %} {% load crispy_forms_tags %}
+{% block title %}Sign up{% endblock %} {% block content %}
 <h2>Sign up</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form|crispy }}
-  <button class="btn btn-success" type="submit">Sign up</button>
-</form>
+
+<script
+  async
+  src="https://telegram.org/js/telegram-widget.js?21"
+  data-telegram-login="twenty48bot"
+  data-size="large"
+  data-onauth="onTelegramAuth(user)"
+  data-request-access="write"
+></script>
+<script type="text/javascript">
+  function onTelegramAuth(user) {
+    {% comment %} alert(
+      "Logged in as " +
+        user.first_name +
+        " " +
+        user.last_name +
+        " (" +
+        user.id +
+        (user.username ? ", @" + user.username : "") +
+        ")"
+    ); {% endcomment %}
+
+    var qs = Object.keys(user)
+      .map(key => {
+        return (
+          encodeURIComponent(key) + "=" + encodeURIComponent(user[key])
+        );
+      })
+      .join("&");
+
+    window.location.href = "/accounts/telegram/login?" + qs;
+  }
+</script>
 {% endblock content %}

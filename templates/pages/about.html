@@ -1,36 +1,44 @@
 {% extends '_base.html' %}
+{% load static %}
 
-{% block title %}About page{% endblock %}
+{% block title %}About page {% endblock %}
 
 {% block content %}
 <h1>About page</h1>
 A remake of the 2048-game but with a competitive programming twist.
-<br>
-<br>
+<p class="mt-2">
+  Download this
+  <a target="_blank" href="{% static 'sample/boilerplate.py' %}"
+    >boilerplate.py</a
+  >
+  code to get started quickly.
+</p>
 <h3>How to play</h3>
 <ul>
-    <li>Your code accepts the current board as input</li>
-    <li>Your code must return a possible move to be made</li>
-    <li>When two tiles with the same number touch, they merge into one!</li>
-    <li>The game ends when there are no more possible moves.</li>
+  <li>Your code accepts the current board as input</li>
+  <li>Your code must return a possible move to be made</li>
+  <li>When two tiles with the same number touch, they merge into one!</li>
+  <li>The game ends when there are no more possible moves.</li>
 </ul>
-<br>
+<br />
 <h3>Rules</h3>
 <ul>
-    <li>The game is played on a 4x4 grid</li>
-    <li>The game ends when the total time elapsed is more than 5 minutes</li>
-    <li>The game ends when there are no more possible moves</li>
-    <li>The game ends when you have made 20,000 moves</li>
+  <li>The game is played on a 4x4 grid</li>
+  <li>The game ends when the total time elapsed is more than 5 minutes</li>
+  <li>The game ends when there are no more possible moves</li>
+  <li>The game ends when you have made 20,000 moves</li>
 </ul>
-<br>
+<br />
 <h3>Scoring</h3>
 <ul>
-    <li>The score is the sum of the tiles multiplied by log 2</li>
+  <li>The score is the sum of the tiles multiplied by log 2</li>
 </ul>
-<br>
+<br />
 <h3>How to submit</h3>
 <ul>
-    <li>The code must be submitted as a single python file on the submission page</li>
+  <li>
+    The code must be submitted as a single python file on the submission page
+  </li>
 </ul>
-<br>
+<br />
 {% endblock content %}
