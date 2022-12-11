@@ -1,19 +1,10 @@
 import os
 from pathlib import Path
 
-import environ
-
-env = environ.Env(    
-    DEBUG=(bool, False)
-)
 # GENERAL
 # ------------------------------------------------------------------------------
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-# ENV
-env_file = BASE_DIR / ".env"
-environ.Env.read_env(env_file= env_file)
-
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-SECRET_KEY
 SECRET_KEY = '43)%4yx)aa@a=+_c(fn&kf3g29xax+=+a&key9i=!98zyim=8j'
 

@@ -1,4 +1,13 @@
-from .base import * 
+import environ
+
+from .base import *
+
+env = environ.Env(    
+    DEBUG=(bool, False)
+)
+
+env_file = BASE_DIR / ".env"
+environ.Env.read_env(env_file= env_file)
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = False
