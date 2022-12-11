@@ -1,4 +1,3 @@
-from sys import setcheckinterval
 from django.shortcuts import render
 from django.views import generic
 from django.contrib.auth import mixins
