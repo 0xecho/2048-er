@@ -12,3 +12,5 @@ db.sqlite3
 media
 code_files/*
 staticfiles/*
+
+.env
