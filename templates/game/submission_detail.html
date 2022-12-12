@@ -1,59 +1,170 @@
 {% extends '_base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
-
 {% block title %}Submission Detail{% endblock %}
-
 {% block content %}
 <h2>Submission Detail</h2>
-
-  <div class="container">
-    <div class="text-center">
+<div class="container">
+   <div class="text-center">
       Submission by: {{object.user.first_name}} {{object.user.last_name}} ({{object.user.username}}) <br>
       Submitted on: {{object.time}} <br>
-      Submission score: <b>{{object.score}}</b> <br>
-    {% if is_processing %}
-      </div>
-    </div>
-    <h4>Still processing, check back after a while...</h4>
-    {% else %}
-      Number of moves: <b>{{object.moves_history | length}}</b>
-    </div>
-    <div class="scores">
-      <div class="score-container">
-        <div class="score">
-          <div class="add" id="add"></div>
-        </div>
-      </div>
-    </div>
-    <div class="game">
-      <div id="tile-container" class="tile-container"></div>
-    </div>
-    <input type="button" value="Next Move" onclick="next_move()">
-    <input type="button" value="Skip to end" onclick="skip_move()">
+      {% if is_processing %}
+   </div>
+</div>
+<h4>Still processing, check back after a while...</h4>
+{% else %}
+Submission score: <b>{{object.score}}</b> <br>
+Number of moves: <b>{{object.moves_history | length}}</b><br />
 
-  </div>
-
-  <script>
-      
-      var MOVES = {{moves}};
-      //   var MOVES = [0,0,0,0,0,0,0,0,0,0];
-      var INDEXES = {{indexes}};
-    //   var INDEXES = [
-    //     [1,2],
-    //     [2,2],
-    //     [14,4],
-    //     [4,2],
-    //     [5,2],
-    //     [6,4],
-    //     [8,2],
-    //     [7,2],
-    //     [9,2],
-    //     [10,2],
-    //   ];
-  </script>
-  
-  <script src="{% static 'js/game.js' %}"></script>
-    
-  {% endif %}
+<input type="checkbox" onclick="var x = document.getElementById('moreInfo'); if (x.style.display === 'none') { x.style.display = 'block'; } else { x.style.display = 'none'; }"> Show more information
+<br />
+<div style="display: none;" id="moreInfo">
+    Current score: <b id="currentScore"></b> <br>
+    Last move: <b id="lastMove"></b> <br>
+    Next move: <b id="nextMove"></b> <br>
+</div>
+</div>
+<div class="scores">
+   <div class="score-container">
+      <div class="score">
+         <div class="add" id="add"></div>
+      </div>
+   </div>
+</div>
+<div class="game">
+   <div id="tile-container" class="tile-container"></div>
+</div>
+<br />
+<span>Speed: </span>
+<input type="range" min="1" max="10" value="5" class="slider" id="speed" style="width: 70%;" oninput="playbackSpeed = this.value">
+<br />
+<input class="btn btn-sm" type="button" value="Prev Move" onclick="pause(); prev_move()">
+<input class="btn btn-sm" id="togglePlay" type="button" value="Play">
+<input class="btn btn-sm" type="button" value="Next Move" onclick="pause(); next_move()">
+<br /><br />
+<input class="btn btn-sm" type="button" value="Skip to start" onclick="pause(); skip_to_start()">
+<input class="btn btn-sm" type="button" value="Skip to end" onclick="pause(); skip_to_end()">
+</div>
+<script src="{% static 'js/game.js' %}"></script>
+<script>
+   const MOVES = {{moves}};
+   const INDEXES = {{indexes}};
+   let MOVE_INDEX = 0;
+   const MOVE_DIRECTION = {
+     0: 'LEFT',
+     1: 'UP',
+     2: 'RIGHT',
+     3: 'DOWN'
+   }
+   
+   //   var MOVES = [0,0,0,0,0,0,0,0,0,0];
+   //   var INDEXES = [
+   //     [1,2],
+   //     [2,2],
+   //     [14,4],
+   //     [4,2],
+   //     [5,2],
+   //     [6,4],
+   //     [8,2],
+   //     [7,2],
+   //     [9,2],
+   //     [10,2],
+   //   ];
+   
+   const board = new Board();
+   
+   let isPlaying = false;
+   let playbackSpeed = 1;
+   let minPlaybackSpeed = 50;
+   let maxPlaybackSpeed = 700;
+   
+   const firstTile = INDEXES.shift();
+   const secondTile = INDEXES.shift();
+   
+   board.addTile({
+     index: firstTile[0],
+     value: firstTile[1]
+   })
+   board.addTile({
+     index: secondTile[0],
+     value: secondTile[1]
+   })
+   board.render();
+   
+   function skip_to_start() {
+     MOVE_INDEX = 0;
+     board.skipToStart();
+     board.addTile({index: firstTile[0],value: firstTile[1]});
+     board.addTile({index: secondTile[0],value: secondTile[1]});
+     board.render();
+   }
+   function prev_move() {
+     MOVE_INDEX = Math.max(0, MOVE_INDEX - 1);
+     document.getElementById("lastMove").innerHTML = MOVE_DIRECTION[MOVES[MOVE_INDEX-1]];
+     document.getElementById("nextMove").innerHTML = MOVE_DIRECTION[MOVES[MOVE_INDEX]];
+     board.undoMove();
+     board.render();
+   }
+   function next_move() {
+     const move = MOVES[MOVE_INDEX];
+     board.makeMove({
+       direction: MOVE_DIRECTION[move]
+     });
+     document.getElementById("lastMove").innerHTML = MOVE_DIRECTION[move];
+      document.getElementById("nextMove").innerHTML = MOVE_DIRECTION[MOVES[MOVE_INDEX+1]];
+     board.addTile({
+       index: INDEXES[MOVE_INDEX][0],
+       value: INDEXES[MOVE_INDEX][1]
+     });
+     console.log("Add tile: " + INDEXES[MOVE_INDEX][0] + " " + INDEXES[MOVE_INDEX][1]);
+     MOVE_INDEX++;
+     board.render();
+   }
+   function skip_to_end() {
+     board.skipToEnd({
+       moves: MOVES.slice(MOVE_INDEX).map(move => MOVE_DIRECTION[move]),
+       indexes: INDEXES.slice(MOVE_INDEX)
+     });
+     MOVE_INDEX = MOVES.length - 1;
+     board.render();
+   }
+   
+   
+   if(document.getElementById("togglePlay")) {
+     document.getElementById("togglePlay").addEventListener("click", function() {
+       isPlaying = !isPlaying;
+       document.getElementById("togglePlay").value = isPlaying ? "Pause" : "Play";
+       if(isPlaying) {
+         play();
+       }
+     });
+   }
+   
+   function play() {
+     if(!isPlaying) {
+       return;
+     }
+     setTimeout(function() {
+       next_move();
+       if(MOVE_INDEX < MOVES.length) {
+         play();
+       }
+     }, maxPlaybackSpeed - (playbackSpeed - 1) * (maxPlaybackSpeed - minPlaybackSpeed) / 9);
+   }
+   
+   function pause() {
+     isPlaying = false;
+     document.getElementById("togglePlay").value = "Play";
+   }
+   
+   document.addEventListener('keydown', event => {
+     if(event.key == "ArrowRight") {
+       next_move();
+     }
+     if(event.key == "ArrowLeft") {
+       prev_move();
+     }
+   });
+</script>
+{% endif %}
 {% endblock content %}
