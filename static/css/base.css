@@ -184,6 +184,12 @@ header .container {
   border: 7px solid #9a9a95;
   box-sizing: border-box;
 }
+
+.tile--2 {
+  background: #ffc43d;
+  color: #f8ffe5;
+}
+
 .tile--4 {
   background: #ef476f;
   color: #f8ffe5;
